@@ -33,12 +33,12 @@ public class DoctorController {
 		return ResponseEntity.ok(service.getDoctor(id));
 	}
 
-	@GetMapping
+	@GetMapping("/")
 	public ResponseEntity<List<Doctor>> getAllDoctors(@RequestParam(value = "speciality", required = false) String speciality) {
 		return ResponseEntity.ok(service.getAllDoctorsWithFilters(speciality));
 	}
 
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<Doctor> registerDoctor(@RequestBody Doctor doctor) throws InvalidInputException {
 		return ResponseEntity.ok(service.register(doctor));
 	}

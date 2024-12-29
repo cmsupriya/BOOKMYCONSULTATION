@@ -45,13 +45,33 @@ public class DoctorService {
 		//save the doctor object to the database
 		//return the doctor object
 	
+	public Doctor register(Doctor doctor) throws InvalidInputException {
+		ValidationUtils.validate(doctor);
+		if (doctor.getAddress() == null) throw new InvalidInputException(Arrays.asList("Address"));
+		doctor.setId(UUID.randomUUID().toString());
+		if (doctor.getSpeciality() == null) {
+			doctor.setSpeciality(Speciality.GENERAL_PHYSICIAN);
+		}
+		Address address = doctor.getAddress();
+		address.setId(doctor.getId());
+		doctor.setAddress(addressRepository.save(address));
+		doctorRepository.save(doctor);
+
+		return doctor;
+	}
 	
 	//create a method name getDoctor that returns object of type Doctor and has a String paramter called id
 		//find the doctor by id
 		//if doctor is found return the doctor
 		//else throw ResourceUnAvailableException
 
-	
+	public Doctor getDoctor(String id) throws ResourceUnAvailableException {
+		Optional<Doctor> doctor = doctorRepository.findById(id);
+
+		if (doctor.isPresent()) 
+			return doctor.get();
+		throw new ResourceUnAvailableException();
+	}	
 
 	public List<Doctor> getAllDoctorsWithFilters(String speciality) {
 

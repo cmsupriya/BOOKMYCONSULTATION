@@ -41,5 +41,4 @@ public class Doctor {
 	private String college;
 	private Integer totalYearsOfExp;
 	private Double rating;
-
 }

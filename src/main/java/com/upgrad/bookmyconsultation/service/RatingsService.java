@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,18 @@ public class RatingsService {
 		//modify the average rating for that specific doctor by including the new rating
 		//save the doctor object to the database
 	
-	
 
-	}
+	public void submitRatings(Rating rating) {
+		rating.setId(UUID.randomUUID().toString());
+		ratingsRepository.save(rating);
+
+		Double avgRating = ratingsRepository
+				.findByDoctorId(rating.getDoctorId())
+				.stream()
+				.collect(Collectors.averagingInt(Rating::getRating));
+		Doctor doctor = doctorRepository.findById(rating.getDoctorId()).get();
+		doctor.setRating(avgRating);
+		doctorRepository.save(doctor);
+		
+	 }
 }
