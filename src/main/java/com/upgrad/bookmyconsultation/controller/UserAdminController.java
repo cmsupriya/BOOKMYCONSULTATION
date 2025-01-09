@@ -1,9 +1,13 @@
 package com.upgrad.bookmyconsultation.controller;
 
+import com.upgrad.bookmyconsultation.entity.Appointment;
 import com.upgrad.bookmyconsultation.entity.User;
 import com.upgrad.bookmyconsultation.exception.InvalidInputException;
 import com.upgrad.bookmyconsultation.service.AppointmentService;
 import com.upgrad.bookmyconsultation.service.UserService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +46,7 @@ public class UserAdminController {
 	
 		//return http response with status set to OK
 
-	@PostMapping("/create")
+	@PostMapping("/register")
 	public ResponseEntity<User> createUser(@RequestBody final User user) throws InvalidInputException {
 		return ResponseEntity.ok(userService.register(user));
 	}
@@ -50,7 +54,7 @@ public class UserAdminController {
 
 
 	@GetMapping("/{userId}/appointments")
-	public ResponseEntity getAppointmentForUser(@PathVariable("userId") String userId) {
+	public ResponseEntity<List<Appointment>> getAppointmentForUser(@PathVariable("userId") String userId) {
 		return ResponseEntity.ok(appointmentService.getAppointmentsForUser(userId));
 	}
 

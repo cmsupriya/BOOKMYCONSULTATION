@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,12 +43,13 @@ public class AppointmentService {
 	public String appointment(Appointment appointment) throws SlotUnavailableException, InvalidInputException {
 		ValidationUtils.validate(appointment);
 		Appointment existingAppointment = appointmentRepository.findByDoctorIdAndTimeSlotAndAppointmentDate(
-			appointment.getDoctorId(), appointment.getTimeSlot(),
-			 appointment.getAppointmentDate());
+				appointment.getDoctorId(), appointment.getTimeSlot(),
+				appointment.getAppointmentDate());
 
 		if (existingAppointment != null) {
 			throw new SlotUnavailableException();
 		}
+		appointment.setCreatedDate(LocalDate.now().toString());
 		appointmentRepository.save(appointment);
 		return appointment.getAppointmentId();
 	}

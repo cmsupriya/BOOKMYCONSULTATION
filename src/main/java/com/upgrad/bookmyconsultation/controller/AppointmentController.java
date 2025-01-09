@@ -27,7 +27,7 @@ public class AppointmentController {
 		//save the appointment details to the database and save the response from the method used
 		//return http response using ResponseEntity
 
-	@PostMapping
+	@PostMapping()
 	public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment) throws SlotUnavailableException, InvalidInputException {
 		return ResponseEntity.ok(appointmentService.appointment(appointment));
 	}
